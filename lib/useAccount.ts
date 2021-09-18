@@ -15,6 +15,7 @@ const useAccount = (): [Account, () => Promise<void>, boolean] => {
   const refreshAccount = async () => {
     try {
       setAccount(await getUpdatedAccount(account))
+      setLoadingError(false);
     } catch (error) {
       setLoadingError(true)
     }

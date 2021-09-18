@@ -17,8 +17,8 @@ const Application = (): ReactElement => {
   )
 
   return (
-    <AccountContext.Provider value={account}>
-      {refreshError ? <p>An error occured getting your latest data. Please try again</p> : <Agenda />}
+    <AccountContext.Provider value={{ account: account, loadingError: refreshError }}>
+      <Agenda />
     </AccountContext.Provider>
   )
 }

@@ -1,7 +1,7 @@
 import { createContext } from 'react'
 
-import Account from 'src/models/Account'
+import AccountWithLoadingError from 'src/models/AccountWithLoadingError'
 
-const AccountContext = createContext<Account | null>(null)
+const AccountContext = createContext<AccountWithLoadingError | null>(null)
 
 export default AccountContext

@@ -27,10 +27,10 @@ const compareByDateTime = (a: AgendaItem, b: AgendaItem) =>
  * and list of calendar events
  */
 
-const GREETING_UPDATES_INTERVAL = 1000
+const GREETING_UPDATES_INTERVAL = 3000
 
 const Agenda = (): ReactElement => {
-  const account = useContext(AccountContext)
+  const {account, loadingError} = useContext(AccountContext)
   const [hour, setHour] = useState(DateTime.local().hour)
 
   const updateHour = () : void => {
@@ -62,7 +62,10 @@ const Agenda = (): ReactElement => {
         <div className={style.header}>
           <span className={style.title}>{title}</span>
         </div>
-
+        {loadingError && <div>
+          <span>An error occured fetching your latest data from the server</span> 
+          <button>Click Here to try again</button>
+          </div>}
         <List>
           {events.map(({ calendar, event }) => (
             <EventCell key={event.id} calendar={calendar} event={event} />
