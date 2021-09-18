@@ -12,6 +12,7 @@ import EventCell from './EventCell'
 
 import style from './style.scss'
 import runEvery from 'lib/runEvery'
+import LoadingErrorMessage from './LoadingErrorMessage'
 
 type AgendaItem = {
   calendar: Calendar
@@ -62,10 +63,7 @@ const Agenda = (): ReactElement => {
         <div className={style.header}>
           <span className={style.title}>{title}</span>
         </div>
-        {loadingError && <div>
-          <span>An error occured fetching your latest data from the server</span> 
-          <button>Click Here to try again</button>
-          </div>}
+        {loadingError && <LoadingErrorMessage />}
         <List>
           {events.map(({ calendar, event }) => (
             <EventCell key={event.id} calendar={calendar} event={event} />

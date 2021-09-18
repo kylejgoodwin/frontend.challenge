@@ -6,7 +6,7 @@ import AccountContext from 'src/context/accountContext'
 
 import Agenda from './Agenda'
 
-const REAL_TIME_UPDATES_INTERVAL = 1000
+const REAL_TIME_UPDATES_INTERVAL = 10000
 
 const Application = (): ReactElement => {
   const [account, refreshAccount, refreshError] = useAccount()

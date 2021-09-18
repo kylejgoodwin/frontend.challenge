@@ -1,0 +1,12 @@
+@import "lib/style";
+
+.card {
+  @include caption-medium-text;
+  border-radius: 4px;
+  background-color: $warningColor;
+  color: white;
+  font-size: 1em;
+  padding: 1em;
+  margin: 1em;
+  line-height: 1em;
+}
