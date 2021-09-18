@@ -6,7 +6,7 @@ const LoadingErrorMessage = (): ReactElement => {
 
     return (
         <div className={style.card}>
-            <span>An unexpected error prevented your events from being refreshed</span>
+            <span>An error prevented your events from being refreshed</span>
         </div>
   )
 }
