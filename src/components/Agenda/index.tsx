@@ -27,7 +27,7 @@ const compareByDateTime = (a: AgendaItem, b: AgendaItem) =>
  * and list of calendar events
  */
 
-const GREETING_UPDATES_INTERVAL = 3000
+const GREETING_UPDATES_INTERVAL = 1000
 
 const Agenda = (): ReactElement => {
   const {account, loadingError} = useContext(AccountContext)
