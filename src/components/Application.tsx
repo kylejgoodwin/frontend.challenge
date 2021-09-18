@@ -6,10 +6,10 @@ import AccountContext from 'src/context/accountContext'
 
 import Agenda from './Agenda'
 
-const REAL_TIME_UPDATES_INTERVAL = 10000
+const REAL_TIME_UPDATES_INTERVAL = 1000
 
 const Application = (): ReactElement => {
-  const [account, refreshAccount] = useAccount()
+  const [account, refreshAccount, refreshError] = useAccount()
 
   useEffect(
     () => runEvery(REAL_TIME_UPDATES_INTERVAL, refreshAccount),
@@ -18,7 +18,7 @@ const Application = (): ReactElement => {
 
   return (
     <AccountContext.Provider value={account}>
-      <Agenda />
+      {refreshError ? <p>An error occured getting your latest data. Please try again</p> : <Agenda />}
     </AccountContext.Provider>
   )
 }
