@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useMemo } from 'react'
+import React, { ReactElement, useContext, useEffect, useMemo, useState } from 'react'
 import { DateTime } from 'luxon'
 
 import greeting from 'lib/greeting'
@@ -11,6 +11,7 @@ import List from './List'
 import EventCell from './EventCell'
 
 import style from './style.scss'
+import runEvery from 'lib/runEvery'
 
 type AgendaItem = {
   calendar: Calendar
@@ -26,8 +27,22 @@ const compareByDateTime = (a: AgendaItem, b: AgendaItem) =>
  * and list of calendar events
  */
 
+const GREETING_UPDATES_INTERVAL = 1000
+
 const Agenda = (): ReactElement => {
   const account = useContext(AccountContext)
+  const [hour, setHour] = useState(DateTime.local().hour)
+
+  const updateHour = () : void => {
+    if(hour !== DateTime.local().hour ){
+      setHour(DateTime.local().hour)
+    }
+  }
+
+  useEffect(
+    () => runEvery(GREETING_UPDATES_INTERVAL, updateHour),
+    [updateHour],
+  )
 
   const events: AgendaItem[] = useMemo(
     () =>
@@ -39,7 +54,7 @@ const Agenda = (): ReactElement => {
     [account],
   )
 
-  const title = useMemo(() => greeting(DateTime.local().hour), [])
+  const title = useMemo(() => greeting(hour), [hour])
 
   return (
     <div className={style.outer}>
