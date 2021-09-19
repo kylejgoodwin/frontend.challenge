@@ -34,13 +34,12 @@ const GREETING_UPDATES_INTERVAL = 1000
 const Agenda = (): ReactElement => {
   const { account, loadingError } = useContext(AccountContext)
   const [hour, setHour] = useState(DateTime.local().hour)
-  const [selectedCalendarID, setSelectedCalendarID] = useState<string | false>(false)
+  const [selectedCalendarID, setSelectedCalendarID] = useState<string>('')
 
   const filterByCalendar = (item: AgendaItem) =>{
     if(!selectedCalendarID) return true;
     return item.calendar.id === selectedCalendarID
   }
-
 
   const updateHour = (): void => {
     if (hour !== DateTime.local().hour) {
@@ -73,7 +72,7 @@ const Agenda = (): ReactElement => {
           <span className={style.title}>{title}</span>
         </div>
         {loadingError && <LoadingErrorMessage />}
-        <div>
+        <div className={style.options}>
           <SelectFilter options={account.calendars} value={selectedCalendarID && selectedCalendarID} setValue={setSelectedCalendarID} />
         </div>
         <List>
