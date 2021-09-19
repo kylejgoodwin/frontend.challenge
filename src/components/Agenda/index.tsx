@@ -28,6 +28,11 @@ const groupByDepartment = (a: AgendaItem, b: AgendaItem) => {
   if(a.event.department === b.event.department){
     return compareByDateTime(a,b)
   }
+
+  if(!a.event.department && b.event.department){ //Handle the case of an event without a department
+    return 1
+  }
+
   return (a.event.department > b.event.department) ? 1 : -1
 }
 /**
