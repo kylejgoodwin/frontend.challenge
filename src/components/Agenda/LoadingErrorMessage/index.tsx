@@ -5,7 +5,7 @@ import style from './style.scss'
 const LoadingErrorMessage = (): ReactElement => {
 
     return (
-        <div className={style.card}>
+        <div className={style.errorMessage}>
             <span>An error prevented your events from being refreshed</span>
         </div>
   )

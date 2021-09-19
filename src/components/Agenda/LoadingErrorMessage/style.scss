@@ -1,6 +1,6 @@
 @import "lib/style";
 
-.card {
+.errorMessage{
   @include caption-medium-text;
   border-radius: 4px;
   background-color: $darkRedColor;
