@@ -47,6 +47,7 @@ const Agenda = (): ReactElement => {
   const { account, loadingError } = useContext(AccountContext)
   const [hour, setHour] = useState(DateTime.local().hour)
   const [selectedCalendarID, setSelectedCalendarID] = useState<string>('')
+  const [departmentGroupingEnabled, setDepartmentGroupingEnabled] = useState<boolean>(false)
 
   const filterByCalendar = (item: AgendaItem) => {
     if (!selectedCalendarID) return true;
@@ -65,18 +66,28 @@ const Agenda = (): ReactElement => {
   )
 
   const events: AgendaItem[] = useMemo(
-    () =>
-      account.calendars
+    () =>{
+      let base = account.calendars
         .flatMap((calendar) =>
           calendar.events.map((event) => ({ calendar, event })),
         ).filter(filterByCalendar)
         .sort(compareByDateTime)
-        .sort(groupByDepartment)
+        
+        if(departmentGroupingEnabled){
+          base = base.sort(groupByDepartment)
+        }
+        return base;
+
+    }
     ,
-    [account, selectedCalendarID],
+    [account, selectedCalendarID, departmentGroupingEnabled],
   )
 
   const title = useMemo(() => greeting(hour), [hour])
+
+  const toggleGrouping = () => {
+    setDepartmentGroupingEnabled(!departmentGroupingEnabled);
+  }
 
   return (
     <div className={style.outer}>
@@ -86,11 +97,12 @@ const Agenda = (): ReactElement => {
         </div>
         {loadingError && <LoadingErrorMessage />}
         <div className={style.options}>
+          <button onClick={toggleGrouping}>{departmentGroupingEnabled ? "Group by Department" : "Disable Grouping"}</button>
           <SelectFilter options={account.calendars} value={selectedCalendarID && selectedCalendarID} setValue={setSelectedCalendarID} />
         </div>
         <List>
           {events.map(({ calendar, event }, index) => {
-            const showDepartment = index === 0 || (events[index - 1] && events[index - 1].event.department != events[index].event.department)
+            const showDepartment = departmentGroupingEnabled && (index === 0 || (events[index - 1] && events[index - 1].event.department != events[index].event.department))
             return <EventCell showDepartment={showDepartment} key={event.id} calendar={calendar} event={event} />
           }
           )}
