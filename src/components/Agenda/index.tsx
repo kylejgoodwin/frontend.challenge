@@ -97,7 +97,7 @@ const Agenda = (): ReactElement => {
         </div>
         {loadingError && <LoadingErrorMessage />}
         <div className={style.options}>
-          <button onClick={toggleGrouping}>{departmentGroupingEnabled ? "Group by Department" : "Disable Grouping"}</button>
+          <button onClick={toggleGrouping}>{!departmentGroupingEnabled ? "Group by Department" : "Disable Grouping"}</button>
           <SelectFilter options={account.calendars} value={selectedCalendarID && selectedCalendarID} setValue={setSelectedCalendarID} />
         </div>
         <List>
