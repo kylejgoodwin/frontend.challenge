@@ -20,10 +20,11 @@ const formatWhen = (dt: DateTime) => dt.toFormat(dt.minute ? 'h:mm a' : 'h a')
 
 interface Props {
   calendar: Calendar
-  event: Event
+  event: Event,
+  showDepartment: boolean
 }
 
-const EventCell = ({ calendar, event }: Props): ReactElement => {
+const EventCell = ({ calendar, event, showDepartment }: Props): ReactElement => {
   const cardBgColor = Color(calendar.color).alpha(0.1).string()
   const titleColor = Color(calendar.color)
     .alpha(0.8)
@@ -31,15 +32,18 @@ const EventCell = ({ calendar, event }: Props): ReactElement => {
     .string()
 
   return (
-    <div className={style.outer}>
-      <div className={style.when}>{formatWhen(event.date)}</div>
-      <div className={style.card} style={{ backgroundColor: cardBgColor }}>
-        <div className={style.cardTitle} style={{ color: titleColor }}>
-          <span>{event.title}</span>
-          {!!event.department && <span>{event.department}</span>}
+    <>
+      {showDepartment && <span>{event.department || "Other"}</span>}
+      <div className={style.outer}>
+        <div className={style.when}>{formatWhen(event.date)}</div>
+        <div className={style.card} style={{ backgroundColor: cardBgColor }}>
+          <div className={style.cardTitle} style={{ color: titleColor }}>
+            <span>{event.title}</span>
+            {!!event.department && <span>{event.department}</span>}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

@@ -25,11 +25,11 @@ const compareByDateTime = (a: AgendaItem, b: AgendaItem) =>
 
 
 const groupByDepartment = (a: AgendaItem, b: AgendaItem) => {
-  if(a.event.department === b.event.department){
-    return compareByDateTime(a,b)
+  if (a.event.department === b.event.department) {
+    return compareByDateTime(a, b)
   }
 
-  if(!a.event.department && b.event.department){ //Handle the case of an event without a department
+  if (!a.event.department && b.event.department) { //Handle the case of an event without a department
     return 1
   }
 
@@ -48,8 +48,8 @@ const Agenda = (): ReactElement => {
   const [hour, setHour] = useState(DateTime.local().hour)
   const [selectedCalendarID, setSelectedCalendarID] = useState<string>('')
 
-  const filterByCalendar = (item: AgendaItem) =>{
-    if(!selectedCalendarID) return true;
+  const filterByCalendar = (item: AgendaItem) => {
+    if (!selectedCalendarID) return true;
     return item.calendar.id === selectedCalendarID
   }
 
@@ -89,9 +89,11 @@ const Agenda = (): ReactElement => {
           <SelectFilter options={account.calendars} value={selectedCalendarID && selectedCalendarID} setValue={setSelectedCalendarID} />
         </div>
         <List>
-          {events.map(({ calendar, event }) => (
-            <EventCell key={event.id} calendar={calendar} event={event} />
-          ))}
+          {events.map(({ calendar, event }, index) => {
+            const showDepartment = index === 0 || (events[index - 1] && events[index - 1].event.department != events[index].event.department)
+            return <EventCell showDepartment={showDepartment} key={event.id} calendar={calendar} event={event} />
+          }
+          )}
         </List>
       </div>
     </div>
