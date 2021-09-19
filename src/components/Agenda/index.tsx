@@ -13,6 +13,7 @@ import EventCell from './EventCell'
 import style from './style.scss'
 import runEvery from 'lib/runEvery'
 import LoadingErrorMessage from './LoadingErrorMessage'
+import SelectFilter from './SelectCalendarFilter'
 
 type AgendaItem = {
   calendar: Calendar
@@ -31,11 +32,12 @@ const compareByDateTime = (a: AgendaItem, b: AgendaItem) =>
 const GREETING_UPDATES_INTERVAL = 1000
 
 const Agenda = (): ReactElement => {
-  const {account, loadingError} = useContext(AccountContext)
+  const { account, loadingError } = useContext(AccountContext)
   const [hour, setHour] = useState(DateTime.local().hour)
+  const [calendarFilterValue,setCalendarFilterValue] = useState<string>('')
 
-  const updateHour = () : void => {
-    if(hour !== DateTime.local().hour ){
+  const updateHour = (): void => {
+    if (hour !== DateTime.local().hour) {
       setHour(DateTime.local().hour)
     }
   }
@@ -64,6 +66,9 @@ const Agenda = (): ReactElement => {
           <span className={style.title}>{title}</span>
         </div>
         {loadingError && <LoadingErrorMessage />}
+        <div>
+         <SelectFilter options={account.calendars} value={calendarFilterValue} />
+        </div>
         <List>
           {events.map(({ calendar, event }) => (
             <EventCell key={event.id} calendar={calendar} event={event} />
