@@ -34,7 +34,13 @@ const GREETING_UPDATES_INTERVAL = 1000
 const Agenda = (): ReactElement => {
   const { account, loadingError } = useContext(AccountContext)
   const [hour, setHour] = useState(DateTime.local().hour)
-  const [calendarFilterValue,setCalendarFilterValue] = useState<string>('')
+  const [selectedCalendarID, setSelectedCalendarID] = useState<string | false>(false)
+
+  const filterByCalendar = (item: AgendaItem) =>{
+    if(!selectedCalendarID) return true;
+    return item.calendar.id === selectedCalendarID
+  }
+
 
   const updateHour = (): void => {
     if (hour !== DateTime.local().hour) {
@@ -52,9 +58,10 @@ const Agenda = (): ReactElement => {
       account.calendars
         .flatMap((calendar) =>
           calendar.events.map((event) => ({ calendar, event })),
-        )
-        .sort(compareByDateTime),
-    [account],
+        ).filter(filterByCalendar)
+        .sort(compareByDateTime)
+    ,
+    [account, selectedCalendarID],
   )
 
   const title = useMemo(() => greeting(hour), [hour])
@@ -67,7 +74,7 @@ const Agenda = (): ReactElement => {
         </div>
         {loadingError && <LoadingErrorMessage />}
         <div>
-         <SelectFilter options={account.calendars} value={calendarFilterValue} />
+          <SelectFilter options={account.calendars} value={selectedCalendarID && selectedCalendarID} setValue={setSelectedCalendarID} />
         </div>
         <List>
           {events.map(({ calendar, event }) => (
