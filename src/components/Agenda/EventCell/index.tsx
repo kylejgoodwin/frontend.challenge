@@ -33,7 +33,9 @@ const EventCell = ({ calendar, event, showDepartment }: Props): ReactElement => 
 
   return (
     <>
-      {showDepartment && <span>{event.department || "Other"}</span>}
+      {showDepartment && <div className={style.groupLabel}>
+        <span>{event.department || "Other"}</span>
+      </div>}
       <div className={style.outer}>
         <div className={style.when}>{formatWhen(event.date)}</div>
         <div className={style.card} style={{ backgroundColor: cardBgColor }}>

@@ -1,5 +1,8 @@
+@import 'lib/style';
+
 .select {
   padding: 4px;
   padding-right: 8px;
-  
+  border-radius: 4px;
+  border: solid 1px $darkGrayColor;
 }

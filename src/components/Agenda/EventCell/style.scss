@@ -1,4 +1,4 @@
-@import 'lib/style';
+@import "lib/style";
 
 .outer {
   display: flex;
@@ -44,4 +44,18 @@
   flex: 1 1;
   display: flex;
   justify-content: space-between;
+}
+
+.groupLabel {
+  @include body-medium-text;
+  margin: 4px 1em;
+  border-bottom: solid 1px $darkGrayColor;
+
+  span {
+    display: block;
+    width: fit-content;
+    padding: 4px;
+    margin: 4px;
+    border-radius: 4px;
+  }
 }
