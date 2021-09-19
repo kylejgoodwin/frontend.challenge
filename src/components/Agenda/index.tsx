@@ -23,6 +23,13 @@ type AgendaItem = {
 const compareByDateTime = (a: AgendaItem, b: AgendaItem) =>
   a.event.date.diff(b.event.date).valueOf()
 
+
+const groupByDepartment = (a: AgendaItem, b: AgendaItem) => {
+  if(a.event.department === b.event.department){
+    return compareByDateTime(a,b)
+  }
+  return (a.event.department > b.event.department) ? 1 : -1
+}
 /**
  * Agenda component
  * Displays greeting (depending on time of day)
@@ -59,6 +66,7 @@ const Agenda = (): ReactElement => {
           calendar.events.map((event) => ({ calendar, event })),
         ).filter(filterByCalendar)
         .sort(compareByDateTime)
+        .sort(groupByDepartment)
     ,
     [account, selectedCalendarID],
   )
