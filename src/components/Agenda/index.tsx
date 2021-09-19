@@ -1,7 +1,4 @@
 import React, { ReactElement, useContext, useEffect, useMemo, useState } from 'react'
-import { DateTime } from 'luxon'
-
-import greeting from 'lib/greeting'
 
 import Calendar from 'src/models/Calendar'
 import Event from 'src/models/Event'
@@ -9,9 +6,9 @@ import AccountContext from 'src/context/accountContext'
 
 import List from './List'
 import EventCell from './EventCell'
+import Greeting from './Greeting'
 
 import style from './style.scss'
-import runEvery from 'lib/runEvery'
 import LoadingErrorMessage from './LoadingErrorMessage'
 import SelectFilter from './SelectCalendarFilter'
 
@@ -41,11 +38,9 @@ const groupByDepartment = (a: AgendaItem, b: AgendaItem) => {
  * and list of calendar events
  */
 
-const GREETING_UPDATES_INTERVAL = 1000
 
 const Agenda = (): ReactElement => {
   const { account, loadingError } = useContext(AccountContext)
-  const [hour, setHour] = useState(DateTime.local().hour)
   const [selectedCalendarID, setSelectedCalendarID] = useState<string>('')
   const [departmentGroupingEnabled, setDepartmentGroupingEnabled] = useState<boolean>(false)
 
@@ -53,17 +48,6 @@ const Agenda = (): ReactElement => {
     if (!selectedCalendarID) return true;
     return item.calendar.id === selectedCalendarID
   }
-
-  const updateHour = (): void => {
-    if (hour !== DateTime.local().hour) {
-      setHour(DateTime.local().hour)
-    }
-  }
-
-  useEffect(
-    () => runEvery(GREETING_UPDATES_INTERVAL, updateHour),
-    [updateHour],
-  )
 
   const events: AgendaItem[] = useMemo(
     () =>{
@@ -77,14 +61,11 @@ const Agenda = (): ReactElement => {
           base = base.sort(groupByDepartment)
         }
         return base;
-
     }
     ,
     [account, selectedCalendarID, departmentGroupingEnabled],
   )
-
-  const title = useMemo(() => greeting(hour), [hour])
-
+  
   const toggleGrouping = () => {
     setDepartmentGroupingEnabled(!departmentGroupingEnabled);
   }
@@ -92,9 +73,7 @@ const Agenda = (): ReactElement => {
   return (
     <div className={style.outer}>
       <div className={style.container}>
-        <div className={style.header}>
-          <span className={style.title}>{title}</span>
-        </div>
+        <Greeting />
         {loadingError && <LoadingErrorMessage />}
         <div className={style.options}>
           <button onClick={toggleGrouping}>{!departmentGroupingEnabled ? "Group by Department" : "Disable Grouping"}</button>
